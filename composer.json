@@ -10,10 +10,15 @@
 		"homepage": "http://github.com/markguinn"
 	}],
 	"extra": {
-		"installer-name": "shop_extendedpricing",
+		
 		"branch-alias": {
 			"dev-master": "1.0.x-dev"
-		}
+		},
+        
+         "expose": [
+            "javascript"
+            
+        ]
 	},
 	"require": {
 		
