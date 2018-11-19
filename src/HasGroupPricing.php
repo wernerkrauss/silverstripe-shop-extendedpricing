@@ -7,6 +7,11 @@
  * @date 08.16.2013
  * @package shop_extendedpricing
  */
+namespace Markguinn\ExtendedPricing;
+
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\FieldList;
+
 class HasGroupPricing extends DataExtension
 {
     private static $price_levels = array(
