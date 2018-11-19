@@ -1,7 +1,7 @@
 {
 	"name": "markguinn/silverstripe-shop-extendedpricing",
 	"description": "Submodule for Silverstripe Shop adding pricing levels based on group (wholesale, etc) and per-item sale pricing.",
-	"type": "silverstripe-module",
+	"type": "silverstripe-vendormodule",
 	"keywords": ["silverstripe", "ecommerce", "shop", "pricing", "sale price", "wholesale"],
 	"license": "MIT",
 	"authors": [{
@@ -16,7 +16,7 @@
 		}
 	},
 	"require": {
-		"silverstripe/framework": ">=3.1",
-		"burnbright/silverstripe-shop": "*"
+		
+		"silvershop/core": "^3"
 	}
 }
