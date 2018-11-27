@@ -11,6 +11,23 @@
  * @date 08.19.2013
  * @package shop_extendedpricing
  */
+namespace  MarkGuinn\ExendedPricing;
+
+use SilverShop\Extension\ShopConfigExtension;
+use SilverShop\Model\Variation\Variation;
+use SilverShop\Page\Product;
+use SilverShop\Page\ProductCategory;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\FieldGroup;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\NumericField;
+use SilverStripe\Forms\OptionsetField;
+use SilverStripe\Forms\ToggleCompositeField;
+use SilverStripe\Omnipay\Model\Payment;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\ORM\FieldType\DBMoney;
+
 class HasPromotionalPricing extends DataExtension
 {
     // Config value - if there is a promo on a parent (category or product) and a child (product or variation),
@@ -141,11 +158,11 @@ class HasPromotionalPricing extends DataExtension
      */
     public function getOriginalPrice()
     {
-        $currency = method_exists('ShopConfig', 'get_site_currency')
-            ? ShopConfig::get_site_currency()
-            : Payment::site_currency();
+        $currency = method_exists(ShopConfigExtension::class, 'get_site_currency')?
+             ShopConfigExtension::get_site_currency() : 'GBP';
 
-        $field = new Money("OriginalPrice");
+
+        $field = new DBMoney("OriginalPrice");
         $field->setAmount($this->sellingPriceBeforePromotion());
         $field->setCurrency($currency);
         return $field;
@@ -171,11 +188,10 @@ class HasPromotionalPricing extends DataExtension
      */
     public function PromoSavings()
     {
-        $currency = method_exists('ShopConfig', 'get_site_currency')
-            ? ShopConfig::get_site_currency()
-            : Payment::site_currency();
+        $currency = method_exists(ShopConfigExtension::class, 'get_site_currency')?
+            ShopConfigExtension::get_site_currency() : 'GBP';
 
-        $field = new Money("PromoSavings");
+        $field = new DBMoney("PromoSavings");
         $field->setAmount($this->calculatePromoSavings());
         $field->setCurrency($currency);
         return $field;
@@ -198,9 +214,9 @@ class HasPromotionalPricing extends DataExtension
         // Special case: if this is a variation without it's own price
         // AND the parent product has a promo, the price we inherited
         // is already discounted, so we need to reset that.
-        if ($this->getOwner() instanceof ProductVariation && !(float)$this->getOwner()->Price) {
+        if ($this->getOwner() instanceof Variation && !(float)$this->getOwner()->Price) {
             $p = $this->getOwner()->Product();
-            if ($p && $p->exists() && $p->hasExtension('HasPromotionalPricing') && $p->hasValidPromotion()) {
+            if ($p && $p->exists() && $p->hasExtension(HasPromotionalPricing::class) && $p->hasValidPromotion()) {
                 $price = $p->sellingPriceBeforePromotion();
             }
         }
@@ -268,9 +284,9 @@ class HasPromotionalPricing extends DataExtension
         } else {
             $sources = array();
 
-            if ($obj instanceof ProductVariation) {
+            if ($obj instanceof Variation) {
                 $p = $obj->Product();
-                if ($p && $p->exists() && $p->hasExtension('HasPromotionalPricing')) {
+                if ($p && $p->exists() && $p->hasExtension(HasPromotionalPricing::class)) {
                     $sources[] = $p;
                 }
                 $sources = array_merge($sources, $this->collectParentPromoSources($p));
@@ -282,7 +298,7 @@ class HasPromotionalPricing extends DataExtension
                     $cats[] = $obj->Parent();
                 }
                 foreach ($cats as $cat) {
-                    if ($cat && $cat->exists() && $cat->hasExtension('HasPromotionalPricing')) {
+                    if ($cat && $cat->exists() && $cat->hasExtension(HasPromotionalPricing::class)) {
                         $sources[] = $cat;
                     }
                     $sources = array_merge($sources, $this->collectParentPromoSources($cat));
@@ -292,7 +308,7 @@ class HasPromotionalPricing extends DataExtension
             if ($obj instanceof ProductCategory) {
                 if ($obj->ParentID) {
                     $p = $obj->Parent();
-                    if ($p && $p->exists() && $p->hasExtension('HasPromotionalPricing')) {
+                    if ($p && $p->exists() && $p->hasExtension(HasPromotionalPricing::class)) {
                         $sources[] = $p;
                     }
                     $sources = array_merge($sources, $this->collectParentPromoSources($p));
