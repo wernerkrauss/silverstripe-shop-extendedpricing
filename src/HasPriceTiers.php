@@ -6,6 +6,17 @@
  * @date 03.21.2014
  * @package shop_extendedpricing
  */
+namespace  MarkGuinn\ExendedPricing;
+
+use SilverShop\Model\Variation\Variation;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
+use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\SiteConfig\SiteConfig;
+
 class HasPriceTiers extends DataExtension
 {
     private static $db = array(
@@ -13,7 +24,7 @@ class HasPriceTiers extends DataExtension
     );
 
     private static $has_many = array(
-        'PriceTiers' => 'PriceTier',
+        'PriceTiers' => PriceTier::class,
     );
 
     /** @var ArrayList - cache of getPrices */
@@ -37,7 +48,7 @@ class HasPriceTiers extends DataExtension
             $this->_prices->push($base);
 
             // Integrate with promo pricing
-            if ($this->owner->hasExtension('HasPromotionalPricing') && $base->Price != $this->owner->BasePrice) {
+            if ($this->owner->hasExtension(HasPromotionalPricing::class) && $base->Price != $this->owner->BasePrice) {
                 $base->OriginalPrice = $this->owner->BasePrice;
             }
 
@@ -47,7 +58,7 @@ class HasPriceTiers extends DataExtension
             // If not, see if the parent has tiers
             if ((!$tiers || !$tiers->exists()) && $this->owner->hasMethod('Parent')) {
                 $parent = $this->owner->Parent();
-                if ($parent && $parent->exists() && $parent->hasExtension('HasPriceTiers')) {
+                if ($parent && $parent->exists() && $parent->hasExtension(self::class)) {
                     $tiers = $parent->PriceTiers();
                     if ($tiers && empty($base->Label) && !empty($parent->BasePriceLabel)) {
                         $base->Label = $parent->BasePriceLabel;
@@ -56,7 +67,7 @@ class HasPriceTiers extends DataExtension
             }
 
             // If not, see if there are global tiers
-            if ((!$tiers || !$tiers->exists()) && SiteConfig::has_extension('HasPriceTiers')) {
+            if ((!$tiers || !$tiers->exists()) && SiteConfig::has_extension(self::class)) {
                 $global = SiteConfig::current_site_config();
                 $tiers  = $global->PriceTiers();
                 if ($tiers && empty($base->Label) && !empty($global->BasePriceLabel)) {
@@ -79,7 +90,7 @@ class HasPriceTiers extends DataExtension
                 }
 
                 // integrate with promo pricing
-                if ($this->owner->hasExtension('HasPromotionalPricing') && !empty($base->OriginalPrice)) {
+                if ($this->owner->hasExtension(HasPromotionalPricing::class) && !empty($base->OriginalPrice)) {
                     $tier->OriginalPrice = $tier->calcPrice($base->OriginalPrice);
                 }
 
@@ -171,15 +182,15 @@ class HasPriceTiers_OrderItem extends DataExtension
         $tier = null;
 
         // Easiest case: the buyable has it's own tiers
-        if ($buyable->hasExtension('HasPriceTiers')) {
+        if ($buyable->hasExtension(HasPriceTiers::class)) {
             $tier = $buyable->getTierForQuantity($this->owner->Quantity);
         }
 
         // Usually, you'd have one set of tiers on the parent product
         // which apply to all variations
-        if (!$tier && $buyable instanceof ProductVariation) {
+        if (!$tier && $buyable instanceof Variation) {
             $prod = $buyable->Product();
-            if ($prod && $prod->exists() && $prod->hasExtension('HasPriceTiers')) {
+            if ($prod && $prod->exists() && $prod->hasExtension(HasPriceTiers::class)) {
                 $tier = $prod->getTierForQuantity($this->owner->Quantity);
             }
         }
@@ -188,7 +199,7 @@ class HasPriceTiers_OrderItem extends DataExtension
         // would want to get the tiers from a parent
         if (!$tier && $buyable->hasMethod('Parent')) {
             $parent = $buyable->Parent();
-            if ($parent && $parent->exists() && $parent->hasExtension('HasPriceTiers')) {
+            if ($parent && $parent->exists() && $parent->hasExtension(HasPriceTiers::class)) {
                 //				echo "{$buyable->ID} parent with tiers\n";
                 $tier = $parent->getTierForQuantity($this->owner->Quantity);
             }
