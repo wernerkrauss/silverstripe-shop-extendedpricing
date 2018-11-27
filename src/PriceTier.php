@@ -14,6 +14,11 @@
  * @package apluswhs.com
  * @subpackage models
  */
+namespace  MarkGuinn\ExendedPricing;
+use SilverShop\Page\Product;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\SiteConfig\SiteConfig;
+
 class PriceTier extends DataObject
 {
     private static $db = array(
@@ -24,8 +29,8 @@ class PriceTier extends DataObject
     );
 
     private static $has_one = array(
-        'Product'    => 'Product',
-        'SiteConfig' => 'SiteConfig', // only used for global tiers, if present
+        'Product'    => Product::class,
+        'SiteConfig' => SiteConfig::class, // only used for global tiers, if present
     );
 
     private static $casting = array(
@@ -44,7 +49,7 @@ class PriceTier extends DataObject
 
     private static $searchable_fields = array('MinQty', 'Label', 'Price', 'Percentage');
 
-
+    private static $table_name = 'SilverShop_PriceTier';
     /**
      * Calculate the price for this tier from a given base price
      * @param float $price [optional]
