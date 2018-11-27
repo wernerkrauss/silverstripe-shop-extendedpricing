@@ -6,6 +6,8 @@
  * @date 11.27.2013
  * @package shop_extendedpricing
  */
+
+namespace  MarkGuinn\ExendedPricing;
 class PriceCache
 {
     /** @var array */
