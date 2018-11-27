@@ -7,6 +7,16 @@
  * @date 08.16.2013
  * @package shop_extendedpricing
  */
+
+namespace  MarkGuinn\ExendedPricing;
+
+use SilverShop\Page\Product;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Security\Security;
+
 class HasGroupPricing extends DataExtension
 {
     private static $price_levels = array(
@@ -19,7 +29,7 @@ class HasGroupPricing extends DataExtension
      */
     public static function get_levels()
     {
-        $price_levels = Config::inst()->get('HasGroupPricing', 'price_levels');
+        $price_levels = Config::inst()->get(static::class, 'price_levels');
         if (!is_array($price_levels)) {
             $price_levels = array();
         }
@@ -109,7 +119,7 @@ class HasGroupPricing extends DataExtension
     {
         if (!PriceCache::inst()->fetch($this->owner, 'Group', $price)) {
             $levels = self::get_levels();
-            $member = Member::currentUser();
+            $member = Security::getCurrentUser();
 
             if (count($levels) > 0 && $member) {
                 // if there is a logged in member and multiple levels, check them uot
