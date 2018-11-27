@@ -10,6 +10,11 @@
  * @date 08.20.2013
  * @package shop_extendedpricing
  */
+namespace  MarkGuinn\ExendedPricing;
+
+
+use SilverStripe\Forms\NumericField;
+
 class PercentageField extends NumericField
 {
     public function Type()
