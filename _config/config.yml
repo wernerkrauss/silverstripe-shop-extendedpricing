@@ -3,4 +3,4 @@ Name: extendedpricing
 ---
 SilverStripe\Admin\LeftAndMain:
   extra_requirements_javascript:
-    - silverstripe-shop-extendedpricing/javascript/ExtendedPricingAdmin.js
+    - markguinn/silverstripe-shop-extendedpricing:javascript/ExtendedPricingAdmin.js
