@@ -24,7 +24,6 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\ToggleCompositeField;
-use SilverStripe\Omnipay\Model\Payment;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\FieldType\DBMoney;
 
@@ -344,7 +343,7 @@ class HasPromotionalPricing extends DataExtension
         // from the saved Total - sometimes by several cents - if
         // we don't round here.
         $precision = (int)Config::inst()->get('Order', 'rounding_precision');
-        $price = round($price, $precision ? $precision : 2);
+        $price = round($price, $precision ?: 2);
 
         if ($price < 0) {
             $price = 0;
