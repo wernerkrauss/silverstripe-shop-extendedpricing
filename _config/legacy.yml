@@ -1,0 +1,7 @@
+---
+Name: extendedpricing-legacy
+---
+# Mapping rules to map old model-classes to new ones.
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    PriceTier: MarkGuinn\ExendedPricing\PriceTier

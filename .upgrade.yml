@@ -1,0 +1,8 @@
+mappings:
+  PriceTier: MarkGuinn\ExendedPricing\PriceTier
+  HasGroupPricing: MarkGuinn\ExendedPricing\HasGroupPricing
+  HasPriceTiers_OrderItem: MarkGuinn\ExendedPricing\HasPriceTiersOrderItem
+  HasPromotionalPricing: MarkGuinn\ExendedPricing\HasPromotionalPricing
+  PercentageField: MarkGuinn\ExendedPricing\PercentageField
+  PriceCache: MarkGuinn\ExendedPricing\PriceCache
+  PromoDatetimeField: MarkGuinn\ExendedPricing\PromoDatetimeField

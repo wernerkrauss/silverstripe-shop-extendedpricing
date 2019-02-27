@@ -12,10 +12,10 @@ class TierPricingTest extends SapphireTest
     public static $fixture_file = 'ExtendedPricingTest.yml';
 
     protected $requiredExtensions = array(
-        'Product' => array('HasPriceTiers', 'HasPromotionalPricing'),
-        'Product_OrderItem' => array('HasPriceTiers_OrderItem'),
-        'ProductVariation_OrderItem' => array('HasPriceTiers_OrderItem'),
-        'SiteConfig' => array('HasPriceTiers'),
+        'Product' => array(HasPriceTiers::class, HasPromotionalPricing::class),
+        'Product_OrderItem' => array(HasPriceTiersOrderItem::class),
+        'ProductVariationOrderItem' => array(HasPriceTiersOrderItem::class),
+        'SiteConfig' => array(HasPriceTiers::class),
     );
 
     /** @var Product */

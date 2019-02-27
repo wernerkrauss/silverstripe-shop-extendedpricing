@@ -23,5 +23,9 @@
 	"require": {
 		
 		"silvershop/core": "^3"
-	}
+	},
+
+    "autoload": {
+        "MarkGuinn\\ExendedPricing": "src"
+    }
 }
