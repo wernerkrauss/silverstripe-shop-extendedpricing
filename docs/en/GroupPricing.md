@@ -8,10 +8,10 @@ primary use case is wholesale or corporate pricing.
 Price levels are defined via yml config like so:
 
 ```
-Product:
+SilverShop\Page\Product:
   extensions:
-    - HasGroupPricing
-HasGroupPricing:
+    - MarkGuinn\ExendedPricing\HasGroupPricing
+MarkGuinn\ExendedPricing\HasGroupPricing:
   price_levels:
     wholesale: WholesalePrice
     supercheap: SuperCheapPrice

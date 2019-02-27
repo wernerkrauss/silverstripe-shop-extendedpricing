@@ -12,21 +12,21 @@ more.
 Usage:
 
 ```
-Product:
+SilverShop\Page\Product:
   extensions:
-    - HasPriceTiers
-Product_OrderItem:
+    - MarkGuinn\ExendedPricing\HasPriceTiers
+SilverShop\Model\Product\OrderItem:
   extensions:
-    - HasPriceTiers_OrderItem
-ProductVariation_OrderItem:
+    - MarkGuinn\ExendedPricing\HasPriceTiersOrderItem
+SilverShop\Model\Variation\OrderItem:
   extensions:
-    - HasPriceTiers_OrderItem
+    - MarkGuinn\ExendedPricing\HasPriceTiersOrderItem
 ```
 
 If you want to have the option of defining global price tiers, add:
 
 ```
-SiteConfig:
+SilverStripe\SiteConfig\SiteConfig:
   extensions:
-    - HasPriceTiers
+    - MarkGuinn\ExendedPricing\HasPriceTiers
 ```

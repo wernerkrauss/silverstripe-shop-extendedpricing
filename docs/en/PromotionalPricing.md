@@ -13,15 +13,15 @@ To use, you must add the 'HasPromotionalPricing' extension at
 whatever levels you want like so:
 
 ```
-Product:
+SilverShop\Page\Product:
   extensions:
-    - HasPromotionalPricing
-ProductVariation:
+    - MarkGuinn\ExendedPricing\HasPromotionalPricing
+SilverShop\Model\Variation\Variation:
   extensions:
-    - HasPromotionalPricing
-ProductCategory:
+    - MarkGuinn\ExendedPricing\HasPromotionalPricing
+SilverShop\Page\ProductCategory:
   extensions:
-    - HasPromotionalPricing
+    - MarkGuinn\ExendedPricing\HasPromotionalPricing
 ```
 
 Discounts are then applied on the Pricing tab in the CMS. By default,
@@ -31,7 +31,7 @@ only yield $4 discount), but if you wish to change that you can
 use the following config setting:
 
 ```
-HasPromotionalPricing:
+MarkGuinn\ExendedPricing\HasPromotionalPricing:
   compound_discounts: true
 ```
 
