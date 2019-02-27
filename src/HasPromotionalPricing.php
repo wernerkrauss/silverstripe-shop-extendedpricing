@@ -37,13 +37,13 @@ class HasPromotionalPricing extends DataExtension
     private static $disable_discounts = false;
 
     private static $db = array(
-        "PromoActive"    => "Boolean",
-        "PromoDisplay"   => "Enum('ShowDiscount,HideDiscount','ShowDiscount')", // Display old price as well?
-        "PromoType"      => "Enum('Percent,Amount','Percent')",
-        "PromoAmount"    => "Currency",
-        "PromoPercent"   => "Percentage",
-        "PromoStartDate" => "Datetime",
-        "PromoEndDate"   => "Datetime",
+        'PromoActive' => 'Boolean',
+        'PromoDisplay' => "Enum('ShowDiscount,HideDiscount','ShowDiscount')", // Display old price as well?
+        'PromoType' => "Enum('Percent,Amount','Percent')",
+        'PromoAmount' => 'Currency',
+        'PromoPercent' => 'Percentage',
+        'PromoStartDate' => 'Datetime',
+        'PromoEndDate' => 'Datetime',
     );
 
     /** @var bool - used by sellingPriceBeforePromotions */
@@ -64,24 +64,25 @@ class HasPromotionalPricing extends DataExtension
         //Requirements::javascript(SHOP_EXTENDEDPRICING_FOLDER . '/javascript/ExtendedPricingAdmin.js');
 
         $newFields = array(
-            new CheckboxField("PromoActive", "Promotional pricing active?"),
-            new OptionsetField("PromoDisplay", "Display Settings",
+            new CheckboxField('PromoActive', 'Promotional pricing active?'),
+            new OptionsetField('PromoDisplay', 'Display Settings',
                 array(
-                    "ShowDiscount"  => "Show base price crossed out",
-                    "HideDiscount"  => "Hide base price",
+                    'ShowDiscount' => 'Show base price crossed out',
+                    'HideDiscount' => 'Hide base price',
                 )
             ),
-            new OptionsetField("PromoType", "Type of discount",
+            new OptionsetField('PromoType', 'Type of discount',
                 array(
-                    "Percent"   => "Percentage of subtotal (eg 25%)",
-                    "Amount"    => "Fixed amount (eg $25.00)"
+                    'Percent' => 'Percentage of subtotal (eg 25%)',
+                    'Amount' => 'Fixed amount (eg $25.00)'
                 )
             ),
-            new PercentageField("PromoPercent", "Percent discount"),
-            new NumericField("PromoAmount", "Fixed discount (e.g. 5 = $5 off)"),
-            new FieldGroup("Valid date range (optional):", array(
-                PromoDatetimeField::create("PromoStartDate", "Start Date / Time"),
-                PromoDatetimeField::create("PromoEndDate", "End Date / Time (you should set the end time to 23:59:59, if you want to include the entire end day)"),
+            new PercentageField('PromoPercent', 'Percent discount'),
+            new NumericField('PromoAmount', 'Fixed discount (e.g. 5 = $5 off)'),
+            new FieldGroup('Valid date range (optional):', array(
+                PromoDatetimeField::create('PromoStartDate', 'Start Date / Time'),
+                PromoDatetimeField::create('PromoEndDate',
+                    'End Date / Time (you should set the end time to 23:59:59, if you want to include the entire end day)'),
             ))
         );
 
@@ -161,7 +162,7 @@ class HasPromotionalPricing extends DataExtension
              ShopConfigExtension::get_site_currency() : 'GBP';
 
 
-        $field = new DBMoney("OriginalPrice");
+        $field = new DBMoney('OriginalPrice');
         $field->setAmount($this->sellingPriceBeforePromotion());
         $field->setCurrency($currency);
         return $field;
@@ -190,7 +191,7 @@ class HasPromotionalPricing extends DataExtension
         $currency = method_exists(ShopConfigExtension::class, 'get_site_currency')?
             ShopConfigExtension::get_site_currency() : 'GBP';
 
-        $field = new DBMoney("PromoSavings");
+        $field = new DBMoney('PromoSavings');
         $field->setAmount($this->calculatePromoSavings());
         $field->setCurrency($currency);
         return $field;

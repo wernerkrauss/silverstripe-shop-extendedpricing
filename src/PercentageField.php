@@ -53,7 +53,7 @@ class PercentageField extends NumericField
         if (!$this->isNumeric()) {
             return '0%';
         }
-        require_once "Zend/Locale/Format.php";
+        require_once 'Zend/Locale/Format.php';
         $locale = new Zend_Locale($this->getLocale());
 
         // convert from the stored format to a real number so we can multiply
